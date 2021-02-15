@@ -1,6 +1,6 @@
 # Creative Embedded Systems: Module 2 (Interactive Devices)
 
-This project contains a python script and an ESP32 Arduino script. The Arduino script should be run by an ESP32 plugged into a Raspberry Pi. There are also a number of other components to attach (push buttons, switch, etc.). These are detailed in the "Physical Setup" section of this ReadMe. The project is also contained in an interactive cardboard enclosure that resembles a large iPod and plays music. A video of the full project can be viewed on YouTube: https://www.youtube.com/watch?v=bYVhDSd7Jqo&feature=youtu.be
+This project contains a python script and an ESP32 Arduino script. The Arduino script should be run by an ESP32 plugged into a Raspberry Pi. There are also a number of other components to attach (push buttons, switch, etc.). These are detailed in the "Physical Setup" section of this ReadMe. The project is also contained in an interactive cardboard enclosure that resembles a large iPod and plays music. A video of the full project can be viewed on YouTube: https://www.youtube.com/watch?v=c4kCjoOUeYk
 
 # Dependencies
 This project requires the Arduino IDE to run. I recommend following this tutorial https://www.raspberrypi-spy.co.uk/2020/12/install-arduino-ide-on-raspberry-pi/ for Raspberry pi 4.
