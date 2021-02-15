@@ -37,31 +37,27 @@ void loop() {
   
   
   if (digitalRead(switchPin) == HIGH) {
-    if (state == 0) {
+    
+    if (state == 1 || state == 3) {
+      state = 0;
+      
+      Serial.write(state);
+      Serial.write('\n');
+    }
+    //Serial.println(0);
+
+  }
+  else {
+    if (state == 0 || state == 2){
       state = 1;
       Serial.write(state);
       Serial.write('\n');
     }
-    else if (state == 2) {
-      state = 3;
-      Serial.write(state);
-      Serial.write('\n');
-    }
-  }
-  else {
-    if (state == 1) {
-      state = 0;
-      Serial.write(state);
-      Serial.write('\n');
-    }
-    else if (state == 3) {
-      state = 2;
-      Serial.write(state + '\n');
-      Serial.write('\n');
-    }
+    //Serial.println(1);
   }
   
   if (digitalRead(yellowPin) == LOW) {
+    //Serial.println(9);
     if (state == 0) state = 2;
     else if (state == 1) state = 3;
     else if (state == 2) state = 0;
@@ -69,11 +65,12 @@ void loop() {
     Serial.write(state);
     Serial.write('\n');
   }
+ 
 
   if (digitalRead(powerPin) == LOW) {
     Serial.write(8);
     Serial.write('\n');
-    Serial.print(8)
+    //Serial.print(8);
   }
   
 }
