@@ -11,14 +11,17 @@ import smbus
 
 #select the correct port and baud rate 
 s = serial.Serial(port='/dev/ttyUSB0', baudrate=9600)
-order = ['songs/cindi_gjwhf.wav', 'songs/bonnie_teoth.wav', 'songs/tiffany_itwan.wav']
-playlist = ['songs/cindi_gjwhf.wav', 'songs/bonnie_teoth.wav', 'songs/tiffany_itwan.wav']
+order = ['songs/cindi_gjwhf.wav', 'songs/bonnie_teoth.wav', 'songs/tiffany_itwan.wav','songs/bowie_itlom.wav', 'songs/abba_dq.wav', 'songs/queen_watc']
+playlist = ['songs/cindi_gjwhf.wav', 'songs/bonnie_teoth.wav', 'songs/tiffany_itwan.wav', 'songs/bowie_itlom.wav', 'songs/abba_dq.wav', 'songs/queen_watc']
 val = "0"
 powerOn = 0
 songTitles = {
     'songs/cindi_gjwhf.wav': ["Girls Just Want", "to Have Fun"],
     'songs/bonnie_teoth.wav': ["Total Eclipse", "of the Heart"],
-    'songs/tiffany_itwan.wav': ["I Think We're", "Alone Now"]
+    'songs/tiffany_itwan.wav': ["I Think We're", "Alone Now"],
+    'songs/bowie_itlom.wav': ["Is There Life", "on Mars?"],
+    'songs/abba_dq.wav': ["Dancing", "Queen"],
+    'songs/queen_watc': ["We are the", "Champions"]
 }
 
 '''* * * * * * * * * * * * * * * START BUS CODE * * * * * * * * * * * * * * *'''
@@ -111,7 +114,7 @@ def lcd_string(message,line):
 
 paused = 0
 currSong = 0
-display = ""
+display = songTitles[playlist[currSong]]
 
 mixer.init()
 lcd_init()
@@ -120,7 +123,8 @@ def playSong(i):
     if i >= len(playlist) or i < 0:
         currSong = 0
         i = 0
-    mixer.music.load(playlist[i]) 
+    mixer.music.load(playlist[i])
+    currSong = i
     mixer.music.set_volume(0.7) 
     mixer.music.play()
     print("playing: ", playlist[i])
@@ -135,58 +139,63 @@ def orderSongs():
     for i in range(0, len(playlist)):
         playlist[i] = order[i]
 
-def playSongs():
+'''def playSongs():
     while True:
         playSong(currSong)
         while (mixer.music.get_busy() == 1 or paused == 1):
             continue
         currSong = currSong+1
+        '''
 
 while True:
     try:
+        display = songTitles[playlist[currSong]]
+        
         if (powerOn == 1 and val == "8"):
             powerOn = 0
             
         while (powerOn == 0):
             ser_bytes = s.readline()
-            print("ser_bytes: ", ser_bytes)
             val = str(ser_bytes)[5:6]
             if val == "8":
                 powerOn = 1
+                print(currSong)
                 playSong(currSong)
         
 
         if ((mixer.music.get_busy() == 1) or paused == 1):
             ser_bytes = s.readline()
-            print("ser_bytes: ", ser_bytes)
             val = str(ser_bytes)[5:6] # state
-            print("val: ", val)
             
-            lcd_string(display,LCD_LINE_1)
-            print(playlist)
+            print(val)
             
+            lcd_string(display[0],LCD_LINE_1)
+            lcd_string(display[1],LCD_LINE_2)
+            print(display)
+         
+              
             if(paused == 1 and (val == "0" or val == "1")):
                 paused = 0
-                mixer.music.unpause() 
+                mixer.music.unpause()
+                #lcd_string(display[0],LCD_LINE_1)
+                #lcd_string(display[1],LCD_LINE_2)
                 print("unpausing: ",val)
                 
             
             elif (val == "0"):
-                print("val was 0")
                 orderSongs()
                 currSong = 0
-                playSong(currSong)
+                playSong(0)
             
             elif (val == "1"):
-                print("val was 1")
                 shuffleSongs()
+                print(playlist)
                 currSong = 0
-                playSong(currSong)
+                playSong(0)
 
             elif(val == "2" or val == "3"):
                 print("paused")
                 paused = 1
-                #if (mixer.music.get_busy() == 1):
                 mixer.music.pause() 
 
             elif val == "4":
@@ -201,8 +210,13 @@ while True:
                 print(currSong)
                 playSong(currSong)
                 #lcd_string(display,LCD_LINE_1)
+            
+            elif paused == 1:
+                display = songTitles[playlist[currSong]]
+                lcd_string(display[0],LCD_LINE_1)
+                lcd_string(display[1],LCD_LINE_2)
             else:
-                break
+                continue
             
     except:
         print("gave up")
