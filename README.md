@@ -26,9 +26,25 @@ Select: Interfacing Options --> I2C and select <Yes> when asked if you would lik
 # Physical Setup
 This project uses a large number of physical components. First, set up the ESP32 by plugging it into the GPIO Extender and then into a breadboard. 
 
-Plug the button you plan to use for pause/play functionality into port 26. Plug the "power" button into port 35.
-For each button, attach the button to the breadboard. On one side of the button, attach one end of a 10 ohm resistor in the same row as a button pin and the other end to 3.3 A power. Attach two wires, one to each row with a button pin to GROUND. Lastly, attach another 10 ohm resistor to the remaining row with a button pin and attach the other end of this resistor to the correct port (26 or 35, respectively).
+Plug the button you plan to use for pause/play functionality into GPIO port 13. Connect the other side of the button to ground.
+Plug the button you plan to use for "power" functionality into port 33. Connect the other side of the button to ground. 
+Plug the middle and left pins of the switch into the breadboard using M-F wires. Now connect the middle wire to ground via another wire in series. Connect the left side to GPIO port 4. 
 
-The i2c LCD is plugged into the Raspberry Pi only. The 
-Plug the switch into port 4.
-Plug the Circular Pentiometer into port 2.
+Lastly, use 3 M-F wires to connect the soft touch sensor to the bread board. Connect one side to ground via a 10K resistor in series. Connect the other side to 3.3V power via another 10K resistor in series. Lastly, connect the middle pin to GPIO port 2. 
+
+The i2c LCD is plugged into the Raspberry Pi only. The GND port is plugged into the Raspberry pi's ground pin. The VCC is plugged into a 5V GPIO pin on the Raspberry Pi. SDA is plugged into GPIO 2 and SCL is plugged into GPIO 3.
+
+A smaller speaker is also connected to the Raspberry pi's audio port.
+
+Plug the ESP32 into the Raspberry pi via a cable that allows data transition (not just power).
+
+# A note on songs
+This project plays music and therefore requires downloaded .wav files. I have not included these in the repository because they are copyrighted materials. In order for your songs to work with the code, do the following:
+Create a folder in the same location or directory as the python script and call this "songs". Within the songs directory, add the corresponding songs as 6 .wav files with the following names: 
+- cindi_gjwhf.wav (corresponds to Cindi Lauper's "Girls Just Want to Have Fun")
+- bonnie_teoth.wav (corresponds to Bonnie Tyler's "Total Eclipse of the Heart")
+- tiffany_itwan.wav (corresponds to Tiffany's "Girls Just Want to Have Fun")
+- abba_dq.wav (corresponds to Abba's "Dancing Queen")
+- queen_watc.wav (corresponds to Queens's "We are the Champions")
+- bowie_itlom.wav (corresponds to David Bowie's "Life on Mars?")
+
