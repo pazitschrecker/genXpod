@@ -101,7 +101,6 @@ def lcd_string(message,line):
 
 
 '''if __name__ == '__main__':
-
   try:
     main()
   except KeyboardInterrupt:
@@ -139,14 +138,6 @@ def orderSongs():
     for i in range(0, len(playlist)):
         playlist[i] = order[i]
 
-'''def playSongs():
-    while True:
-        playSong(currSong)
-        while (mixer.music.get_busy() == 1 or paused == 1):
-            continue
-        currSong = currSong+1
-        '''
-
 while True:
     try:
         display = songTitles[playlist[currSong]]
@@ -167,19 +158,16 @@ while True:
             ser_bytes = s.readline()
             val = str(ser_bytes)[5:6] # state
             
-            print(val)
+            #print(val)
             
             lcd_string(display[0],LCD_LINE_1)
             lcd_string(display[1],LCD_LINE_2)
-            print(display)
+            #print(display)
          
               
             if(paused == 1 and (val == "0" or val == "1")):
                 paused = 0
                 mixer.music.unpause()
-                #lcd_string(display[0],LCD_LINE_1)
-                #lcd_string(display[1],LCD_LINE_2)
-                print("unpausing: ",val)
                 
             
             elif (val == "0"):
@@ -189,27 +177,23 @@ while True:
             
             elif (val == "1"):
                 shuffleSongs()
-                print(playlist)
                 currSong = 0
                 playSong(0)
 
             elif(val == "2" or val == "3"):
-                print("paused")
+                #print("paused")
                 paused = 1
                 mixer.music.pause() 
 
             elif val == "4":
-                print("PREV")
+                #print("PREV")
                 currSong = currSong-1
-                print(currSong)
                 playSong(currSong)
-                #lcd_string(display,LCD_LINE_1)
+
             elif val == "5":
-                print("NEXT")
+                #print("NEXT")
                 currSong = currSong+1
-                print(currSong)
                 playSong(currSong)
-                #lcd_string(display,LCD_LINE_1)
             
             elif paused == 1:
                 display = songTitles[playlist[currSong]]
@@ -217,6 +201,11 @@ while True:
                 lcd_string(display[1],LCD_LINE_2)
             else:
                 continue
+        
+        # continue playing music 
+        if ((mixer.music.get_busy() != 1) and paused != 1):
+            currSong = currSong+1
+            playSong(currSong)
             
     except:
         print("gave up")
